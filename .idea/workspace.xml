@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="adcf5478-908d-48d9-97a7-8d8a09bf7d9a" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="Vue Single File Component" />
+      </list>
+    </option>
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1yZyKzWgSaWmMX5vSfg71TsZLYX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.gutterIcons" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Projects\VueProjects\openlayers_maps" />
+      <recent name="E:\Projects\VueProjects\openlayers_maps\public" />
+      <recent name="E:\Projects\VueProjects\openlayers_maps\src\assets" />
+      <recent name="E:\Projects\VueProjects\openlayers_maps\src" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="adcf5478-908d-48d9-97a7-8d8a09bf7d9a" name="Default Changelist" comment="" />
+      <created>1632473344963</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1632473344963</updated>
+      <workItem from="1632473346016" duration="2988000" />
+      <workItem from="1632476375384" duration="1269000" />
+      <workItem from="1632625421725" duration="2964000" />
+      <workItem from="1632640951680" duration="8102000" />
+      <workItem from="1632706812416" duration="13918000" />
+      <workItem from="1632791323535" duration="6483000" />
+      <workItem from="1632810390389" duration="8908000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="3086" y="197" key="SettingsEditor" timestamp="1632820350157">
+      <screen x="2560" y="0" width="2048" height="1104" />
+    </state>
+    <state x="3086" y="197" key="SettingsEditor/0.0.1707.1019/2560.0.2048.1104@2560.0.2048.1104" timestamp="1632820350157" />
+    <state x="3241" y="257" key="run.anything.popup" timestamp="1632646991177">
+      <screen x="2560" y="0" width="2048" height="1104" />
+    </state>
+    <state x="3241" y="257" key="run.anything.popup/0.0.1707.1019/2560.0.2048.1104@2560.0.2048.1104" timestamp="1632646991177" />
+    <state x="3247" y="241" width="672" height="678" key="search.everywhere.popup" timestamp="1632730347616">
+      <screen x="2560" y="0" width="2048" height="1104" />
+    </state>
+    <state x="3247" y="241" width="672" height="678" key="search.everywhere.popup/0.0.1707.1019/2560.0.2048.1104@2560.0.2048.1104" timestamp="1632730347616" />
+  </component>
+  <component name="XPathView.XPathProjectComponent">
+    <history />
+    <find-history />
+  </component>
+</project>
