@@ -16,47 +16,46 @@
 </template>
 
 <script>
-import Overlay from "ol/Overlay";
-import {inject, ref, watch, onMounted, toRefs, reactive} from "vue";
+import Overlay from 'ol/Overlay'
+import {inject, ref, watch, onMounted, toRefs, reactive} from 'vue'
 export default {
-  name: "OverLayTyInfo",
-  props:{
-    pointInfo:Object,
+  name : 'OverLayTyInfo',
+  props: {
+    pointInfo: Object,
   },
   setup(props){
-    const state = inject("state");
-    const isMapInit = inject("isMapInit")
-    const overlayContainer = ref(null);
-    let tyOverlay;
-    onMounted(()=>{
+    const state = inject('state')
+    const isMapInit = inject('isMapInit')
+    const overlayContainer = ref(null)
+    let tyOverlay
+    onMounted(() => {
       tyOverlay = new Overlay({
-        element: overlayContainer.value,
-        autoPan: true,
+        element         : overlayContainer.value,
+        autoPan         : true,
         autoPanAnimation: {
           duration: 250,
         },
-      });
-      tyOverlay.setPosition(undefined);
+      })
+      tyOverlay.setPosition(undefined)
     })
-    watch(isMapInit,(isMapInitValue)=>{
-      if(isMapInitValue) {
-        state.olMap.addOverlay(tyOverlay);   // 监听地图是否渲染完成
+    watch(isMapInit, (isMapInitValue) => {
+      if (isMapInitValue) {
+        state.olMap.addOverlay(tyOverlay)   // 监听地图是否渲染完成
       }
     })
     watch(() => props.pointInfo, pointInfo => {
-      if (pointInfo === undefined) tyOverlay.setPosition(undefined);
-      else {
-        let position = [parseFloat(pointInfo.lng), parseFloat(pointInfo.lat)];
-        tyOverlay.setPosition(position);
-        let radius7 = pointInfo.radius7.split("|").sort((a,b) => parseFloat(a) - parseFloat(b)).map(Number)
-        let radius10 = pointInfo.radius10.split("|").sort((a,b) => parseFloat(a) - parseFloat(b)).map(Number)
-        let radius12 = pointInfo.radius12.split("|").sort((a,b) => parseFloat(a) - parseFloat(b)).map(Number)
-        pointInfo.L7 = [radius7.shift(),radius7.pop()].join(" ~ ")
-        pointInfo.L10 = [radius10.shift(),radius10.pop()].join(" ~ ")
-        pointInfo.L12 = [radius12.shift(),radius12.pop()].join(" ~ ")
+      if (pointInfo === undefined) { tyOverlay.setPosition(undefined) } else {
+        let position = [ parseFloat(pointInfo.lng), parseFloat(pointInfo.lat) ]
+        tyOverlay.setPosition(position)
+        let radius7 = pointInfo.radius7.split('|').sort((a, b) => parseFloat(a) - parseFloat(b)).map(Number)
+        let radius10 = pointInfo.radius10.split('|').sort((a, b) => parseFloat(a) - parseFloat(b)).map(Number)
+        let radius12 = pointInfo.radius12.split('|').sort((a, b) => parseFloat(a) - parseFloat(b)).map(Number)
+        pointInfo.L7 = [ radius7.shift(), radius7.pop() ].join(' ~ ')
+        pointInfo.L10 = [ radius10.shift(), radius10.pop() ].join(' ~ ')
+        pointInfo.L12 = [ radius12.shift(), radius12.pop() ].join(' ~ ')
       }
     })
-    return{
+    return {
       overlayContainer
     }
   }

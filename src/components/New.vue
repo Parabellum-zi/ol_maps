@@ -4,7 +4,7 @@
 
 <script setup>
 
-import { ref, defineProps} from 'vue';
+import { ref, defineProps} from 'vue'
 const name = ref('Sam')
 
 

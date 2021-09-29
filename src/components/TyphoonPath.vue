@@ -12,8 +12,8 @@ import { getTyphoonData } from "../request/api.js";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSouse } from "ol/source";
 import Feature from "ol/Feature";
-import { Point, MultiLineString, LineString, Polygon } from "ol/geom";
-import { Fill, Circle, Style } from "ol/style";
+import { Point, MultiLineString, LineString, Polygon, Circle } from "ol/geom";
+import { Fill, Circle as CircleStyle, Style } from "ol/style";
 import featureObj from "../common/feature";
 import OverlayTyInfo from "../components/OverLayTyInfo.vue"
 export default  {
@@ -22,6 +22,7 @@ export default  {
     OverlayTyInfo
   },
   setup(){
+    // ref变量一般用const申明，他本身不可变，变得是他的value
     const olContainer = ref();
     let lastSolar;
     let lastPointEvent;
@@ -76,7 +77,7 @@ export default  {
         });
         featurePoints.setStyle(
           new Style({
-            image: new Circle({
+            image: new CircleStyle({
               fill: new Fill({
                 color: judgeColor(typhoonPoints[index].strong),
               }),
@@ -90,7 +91,7 @@ export default  {
           typhoonPoints[index].radius7.length != null ||
           typhoonPoints[index].radius7.length != 0
         ) {
-          let featureSolar = drawSolar(typhoonPoints[index]);
+          let featureSolar = exactDrawSolar(typhoonPoints[index]);
           if (lastSolar != null) source.removeFeature(lastSolar);
           lastSolar = featureSolar;
           source.addFeature(featureSolar);
@@ -150,6 +151,57 @@ export default  {
         geometry: new Polygon([positions]),
         typhoonSolar: true, //在生成要素时添加属性，等同于featurePoints.set("typhoonPoint", true);
       });
+    }
+    /**
+     * 准确绘制风圈
+     * 参考   https://blog.csdn.net/q1025387665a/article/details/119065635
+     *
+     * 屏幕距离：P, 分辨率：R, 比例尺：S
+     * 实际距离 = P * R
+     * P = 实际距离 / R
+     * */
+    function exactDrawSolar(point) {
+      let solarRadius;
+      if(point.radius7 !== ""){
+        solarRadius = point.radius7.split("|").map((res) => parseFloat(res));
+      }
+      let Configs = { // 从东南开始逆时针绘制
+          SE: solarRadius[0] / 200,
+          SW: solarRadius[1] / 200,
+          NW: solarRadius[2] / 200,
+          NE: solarRadius[3] / 200,
+      };
+      const circleFeature = new Feature({
+        geometry: new Circle([point.lng, point.lat]),
+      });
+      circleFeature.setStyle(
+        new Style({
+          renderer(coordinates, state) {
+            // console.log(coordinates, state);
+            let[x, y] = coordinates[0]
+            const ctx = state.context;
+            ctx.beginPath();
+            let count = 1;
+            for(let i in Configs){
+              let startRatio = 0.5  * count * Math.PI - 0.5 * Math.PI;
+              let endRatio = 0.5  * count * Math.PI; // 依次递增0.5Π
+              let distance = Configs[i] / state.resolution;
+              // x,y 圆心的x,y坐标。r 圆的半径, 开始，结束角度
+              ctx.arc(x,y,distance,startRatio,endRatio);
+              count++;
+            }
+            ctx.fillStyle = "rgba(238, 160, 29, 0.6)";
+            ctx.fill();
+            ctx.closePath();
+            count = 1;
+          }
+        })
+      )
+      // return new Feature({
+      //   geometry: new Polygon([positions]),
+      //   typhoonSolar: true, //在生成要素时添加属性，等同于featurePoints.set("typhoonPoint", true);
+      // });
+      return circleFeature
     }
     /**
      * 根据台风等级设置落点颜色
