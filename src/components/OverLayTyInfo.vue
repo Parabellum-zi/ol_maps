@@ -8,9 +8,9 @@
       <li><span>风速风力 : </span><span>{{ pointInfo.speed }} 米/秒 <span style="color: red"> ({{ pointInfo.power }}级{{ pointInfo.strong }}) </span></span></li>
       <li><span>中心气压 : </span><span>{{ pointInfo.pressure }}百帕</span></li>
       <li><span>移速移向 : </span><span>{{ pointInfo.movespeed}}公里/小时, {{ pointInfo.movedirection }}</span></li>
-      <li v-if="pointInfo.radius7 != '' "><span>七级半径 : </span><span>{{ pointInfo.L7 }} 公里</span></li>
-      <li v-if="pointInfo.radius10 != '' "><span>十级半径 : </span><span>{{ pointInfo.L10 }} 公里</span></li>
-      <li v-if="pointInfo.radius12 != '' "><span>十二级半径 : </span><span>{{ pointInfo.L12 }} 公里</span></li>
+      <li v-if="pointInfo.radius7 !== '' "><span>七级半径 : </span><span>{{ pointInfo.L7 }} 公里</span></li>
+      <li v-if="pointInfo.radius10 !== '' "><span>十级半径 : </span><span>{{ pointInfo.L10 }} 公里</span></li>
+      <li v-if="pointInfo.radius12 !== '' "><span>十二级半径 : </span><span>{{ pointInfo.L12 }} 公里</span></li>
     </ul>
   </div>
 </template>
@@ -30,8 +30,8 @@ export default {
     let tyOverlay
     onMounted(() => {
       tyOverlay = new Overlay({
-        element         : overlayContainer.value,
-        autoPan         : true,
+        element: overlayContainer.value,
+        autoPan: true,
         autoPanAnimation: {
           duration: 250,
         },

@@ -1,27 +1,31 @@
 <template>
   <OverlayTyInfo :pointInfo="pointInfo"></OverlayTyInfo>
-  <div id="map" ref="olContainer"></div>
+  <div id="map" ref="olContainer">
+    <Measure/>
+  </div>
 </template>
 
 <script>
-import { ref, reactive, onMounted, provide, shallowReactive } from "vue";
-import { Map, View } from "ol";
-import { mapConfig, mapTile } from "../config/olMapConfig.js";
-import { defaults as defaultControls } from "ol/control";
-import { getTyphoonData } from "../request/api.js";
-import { Vector as VectorLayer } from "ol/layer";
-import { Vector as VectorSouse } from "ol/source";
+import {ref, reactive, onMounted, provide, shallowReactive} from "vue";
+import {Map, View} from "ol";
+import {mapConfig, mapTile} from "../config/olMapConfig.js";
+import {defaults as defaultControls} from "ol/control";
+import {getTyphoonData} from "../request/api.js";
+import {Vector as VectorLayer} from "ol/layer";
+import {Vector as VectorSouse} from "ol/source";
 import Feature from "ol/Feature";
-import { Point, MultiLineString, LineString, Polygon, Circle } from "ol/geom";
-import { Fill, Circle as CircleStyle, Style } from "ol/style";
+import {Point, MultiLineString, LineString, Polygon, Circle} from "ol/geom";
+import {Fill, Circle as CircleStyle, Style} from "ol/style";
 import featureObj from "../common/feature";
 import OverlayTyInfo from "../components/OverLayTyInfo.vue"
-export default  {
+import Measure from "../components/Measure.vue"
+export default {
   name: "TyphoonPath",
-  components:{
-    OverlayTyInfo
+  components: {
+    OverlayTyInfo,
+    Measure
   },
-  setup(){
+  setup() {
     // ref变量一般用const申明，他本身不可变，变得是他的value
     const olContainer = ref();
     let lastSolar;
@@ -38,6 +42,7 @@ export default  {
       drawTyphoonByInterval();
       ctrlInteractiveEvents();
     });
+
     function initMap() {
       state.olMap = new Map({
         target: olContainer.value,
@@ -48,10 +53,11 @@ export default  {
           center: [103.3, 35.5] || [mapConfig.log, mapConfig.lat],
           zoom: 4 || mapConfig.zoom,
         }),
-        controls: defaultControls({ attribution: false }),
+        controls: defaultControls({attribution: false}),
       });
       isMapInit.value = true;
     }
+
     async function drawTyphoonByInterval() {
       const typhoonData = await getTyphoonData();
       const typhoonPoints = typhoonData.data[0].points;
@@ -68,7 +74,7 @@ export default  {
           typhoonPoints[index].lng,
           typhoonPoints[index].lat,
         ];
-        if(index === 0){
+        if (index === 0) {
           state.olMap.getView().setCenter(pointsPosition)   // 设置台风起始位置到地图中心。
         }
         let featurePoints = new Feature({
@@ -112,6 +118,7 @@ export default  {
       }, 500);
       state.olMap.addLayer(layer);
     }
+
     /**
      * 绘制台风风圈
      * param {}
@@ -152,6 +159,7 @@ export default  {
         typhoonSolar: true, //在生成要素时添加属性，等同于featurePoints.set("typhoonPoint", true);
       });
     }
+
     /**
      * 准确绘制风圈
      * 参考   https://blog.csdn.net/q1025387665a/article/details/119065635
@@ -161,16 +169,111 @@ export default  {
      * P = 实际距离 / R
      * */
     function exactDrawSolar(point) {
-      let solarRadius;
-      if(point.radius7 !== ""){
-        solarRadius = point.radius7.split("|").map((res) => parseFloat(res));
-      }
+      let level;
+      // console.log(point);
+      let solarRadius7 = point.radius7.split("|").map((res) => parseFloat(res));
+      let solarRadius10 = point.radius10.split("|").map((res) => parseFloat(res));
+      let solarRadius12 = point.radius12.split("|").map((res) => parseFloat(res));
+      let solarArr = [solarRadius7,solarRadius10,solarRadius12]
+      // console.log(solarRadius7,solarRadius10,solarRadius12);
+      // switch (solarArr) {
+      //     case solarArr[1].length === 4:
+      //       console.log("10101001010101001");
+      //       break;
+      //     default :
+      //       // console.log(solarArr[1].includes(NaN));
+      //       console.log(solarArr[1].length);
+      //       console.log("default");
+      // }
+      // solarArr.map((res, index)=> {
+        // console.log(res);
+        // console.log(res.length);
+        // console.log(res.includes(NaN));
+        // if (res.includes(NaN)) return
+        // let Configs1 = { // 从东南开始逆时针绘制
+        //   SE: res[0],
+        //   SW: res[1],
+        //   NW: res[2],
+        //   NE: res[3],
+        // };
+
+        // if (!res.includes(NaN)){
+/*          let Configs = { // 从东南开始逆时针绘制
+            SE: res[0],
+            SW: res[1],
+            NW: res[2],
+            NE: res[3],
+          };
+
+
+          // console.log(point,Configs,level);
+        if(!isNaN(Configs.SE)){
+          switch (index){
+            case 0:
+              level = 200
+              return solarLevel(point, Configs, level)
+              // break
+            case 1:
+              level = 150;
+              return solarLevel(point, Configs, level)
+              // break
+            case 2:
+              level = 100;
+              return solarLevel(point, Configs, level)
+              // break
+          }
+          console.log(Configs);
+        }
+
+        // }
+      })
+      console.log("_______________");*/
+
       let Configs = { // 从东南开始逆时针绘制
-          SE: solarRadius[0] / 200,
-          SW: solarRadius[1] / 200,
-          NW: solarRadius[2] / 200,
-          NE: solarRadius[3] / 200,
+        SE: solarRadius7[0],
+        SW: solarRadius7[1],
+        NW: solarRadius7[2],
+        NE: solarRadius7[3],
       };
+      return solarLevel(point, Configs, 200, "ssssss")
+
+
+
+/*      if (point.radius7 !== "") {
+        let solarRadius7 = point.radius7.split("|").map((res) => parseFloat(res));
+        let Configs = { // 从东南开始逆时针绘制
+          SE: solarRadius7[0] / 200,
+          SW: solarRadius7[1] / 200,
+          NW: solarRadius7[2] / 200,
+          NE: solarRadius7[3] / 200,
+        };
+        if (point.radius10 !== "") {
+          let solarRadius10 = point.radius10.split("|").map((res) => parseFloat(res));
+          let Configs10 = { // 从东南开始逆时针绘制
+            SE: solarRadius10[0] / 150,
+            SW: solarRadius10[1] / 150,
+            NW: solarRadius10[2] / 150,
+            NE: solarRadius10[3] / 150,
+
+          };
+         if (point.radius12 !== "") {
+           let solarRadius12 = point.radius12.split("|").map((res) => parseFloat(res));
+           let Configs12 = { // 从东南开始逆时针绘制
+             SE: solarRadius12[0] / 100,
+             SW: solarRadius12[1] / 100,
+             NW: solarRadius12[2] / 100,
+             NE: solarRadius12[3] / 100,
+           };
+           return solarLevel(point, Configs12, 12)
+         }
+          return solarLevel(point, Configs10, 10)
+        }
+        return solarLevel(point, Configs, 7)
+      }*/
+    }
+
+    function solarLevel(point, Configs, level) {
+      // console.log(point, Configs, level);
       const circleFeature = new Feature({
         geometry: new Circle([point.lng, point.lat]),
       });
@@ -178,31 +281,32 @@ export default  {
         new Style({
           renderer(coordinates, state) {
             // console.log(coordinates, state);
-            let[x, y] = coordinates[0]
+            let [x, y] = coordinates[0]
             const ctx = state.context;
             ctx.beginPath();
             let count = 1;
-            for(let i in Configs){
-              let startRatio = 0.5  * count * Math.PI - 0.5 * Math.PI;
-              let endRatio = 0.5  * count * Math.PI; // 依次递增0.5Π
+            for (let i in Configs) {
+              let startRatio = 0.5 * count * Math.PI - 0.5 * Math.PI;
+              let endRatio = 0.5 * count * Math.PI; // 依次递增0.5Π
               let distance = Configs[i] / state.resolution;
               // x,y 圆心的x,y坐标。r 圆的半径, 开始，结束角度
-              ctx.arc(x,y,distance,startRatio,endRatio);
+              ctx.arc(x, y, distance / level, startRatio, endRatio);
               count++;
             }
-            ctx.fillStyle = "rgba(238, 160, 29, 0.6)";
+            if (level === 200) ctx.fillStyle = "rgba(238, 160, 29, 0.6)";
+            else if (level === 150) ctx.fillStyle = "rgb(131,208,121)";
+            else if (level === 100) {
+              ctx.fillStyle = "rgb(117,147,236)"
+            }
             ctx.fill();
             ctx.closePath();
             count = 1;
           }
         })
       )
-      // return new Feature({
-      //   geometry: new Polygon([positions]),
-      //   typhoonSolar: true, //在生成要素时添加属性，等同于featurePoints.set("typhoonPoint", true);
-      // });
       return circleFeature
     }
+
     /**
      * 根据台风等级设置落点颜色
      * params {String} windLevel 风力等级
@@ -219,15 +323,17 @@ export default  {
       };
       return map[windLevel];
     }
+
     function clearPointStyle() {
       if (lastPointEvent != null) {
         lastPointEvent.getStyle().getImage().setRadius(4);
         lastPointEvent.changed();
       }
     }
+
     function callTyphoonPointsEvent(feature, execName) {
       let obj = {
-        olMap:state.olMap,
+        olMap: state.olMap,
         feature,
         clearPointStyle,
       };
@@ -236,6 +342,7 @@ export default  {
         pointInfo.value = lastPointEvent.get("pointInfo");
       }
     }
+
     function ctrlInteractiveEvents() {
       state.olMap.on("pointermove", (e) => {
         let pixel = e.pixel;
@@ -265,6 +372,7 @@ export default  {
         }
       });
     }
+
     return {
       olContainer,
       pointInfo   // 子组件动态监听，需return
